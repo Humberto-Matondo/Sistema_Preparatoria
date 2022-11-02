@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
-file = Path(__file__).resolve()
-parent, root = file.parent, file.parents[1]
-sys.path.append(str(root))
-
 from src.controlers.aluno import prencAluno
 from src.controlers.professor import prencProf
 from src.controlers.gerente import prencGerent
+
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
 
 
 def menu():

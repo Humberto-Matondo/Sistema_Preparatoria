@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
+from src.models.aluno import alunos
+
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-from src.models.aluno import alunos
 
 def prencAluno():
     aluno1 = input('NOME DO ALUNO: ')

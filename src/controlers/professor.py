@@ -1,10 +1,12 @@
 import sys
 from pathlib import Path
+from src.models.professor import professores
+
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-from src.models.professor import professores
+
 
 def prencProf():
     professor = input('NOME PROFESSOR: ')

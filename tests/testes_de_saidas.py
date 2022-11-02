@@ -22,5 +22,5 @@ for pessoa in exemplo:
 
 print('LISTA_PESSOAS: ')
 for pessoa in exemplo:
-    print(pessoa)/
+    print(pessoa)
 
