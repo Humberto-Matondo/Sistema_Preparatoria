@@ -1,0 +1,22 @@
+[
+  {
+    "nome_P": "Guilherme Francisco",
+    "idade": 32,
+    "sexo": "M",
+    "bI": "00000LA000",
+    "senha_P": "12345",
+    "classe_que_dara_aulas": 9,
+    "disciplina": "MATEMATICA",
+    "iD": 2023507
+  },
+  {
+    "nome_P": "Maria da Silva",
+    "idade": 29,
+    "sexo": "F",
+    "bI": "11111LA000",
+    "senha_P": "0987",
+    "classe_que_dara_aulas": 7,
+    "disciplina": "QUIMICA",
+    "iD": 202354
+  }
+]

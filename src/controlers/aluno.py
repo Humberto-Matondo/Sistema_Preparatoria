@@ -8,11 +8,11 @@ sys.path.append(str(root))
 
 
 def prencAluno():
-    aluno1 = input('NOME DO ALUNO: ')
+    aluno1 = input('NOME DO ALUNO: ').upper()
     senhaA = input('SUA SENHA: ')
     i = 0
     for aluno in alunos:
-        if aluno1.upper() == aluno['Nome_A'].upper() and senhaA == aluno['senha_A']:
+        if aluno1 == aluno['Nome_A'].upper() and senhaA == aluno['senha_A']:
             print(f'BEM VINDO {aluno1.upper()}.\n')
             i+=1
             break

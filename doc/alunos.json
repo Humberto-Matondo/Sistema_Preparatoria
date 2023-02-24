@@ -1,0 +1,65 @@
+[
+  {
+    "Nome_A": "Humberto Matondo",
+    "Idade": 25,
+    "Sexo": "M",
+    "N_Bi": "00000LA000",
+    "Ano_Lectivo": 9,
+    "Disciplinas": [
+      "ED. FISICA",
+      "MATEMATICA vol.3",
+      "ED. LABORAL",
+      "EMC vol.3",
+      "EMPREENDEDORISMO",
+      "FISICA vol.3",
+      "GEOGRAFIA vol.3",
+      "INGLES vol.2",
+      "BIOLOGIA vol.3",
+      "PORTUGUES vol.3"
+    ],
+    "senha_A": "12345",
+    "ID": 20231314
+  },
+  {
+    "Nome_A": "Leandra Carvalho",
+    "Idade": 20,
+    "Sexo": "F",
+    "N_Bi": "11111LA111",
+    "Ano_Lectivo": 7,
+    "Disciplinas": [
+      "ED. FISICA",
+      "MATEMATICA",
+      "EVP",
+      "EMC",
+      "FISICA ",
+      "BIOLOGIA",
+      "GEOGRAFIA",
+      "HISTORIA",
+      "PORTUGUES",
+      "QUIMICA"
+    ],
+    "senha_A": "09876",
+    "ID": 20234571
+  },
+  {
+    "Nome_A": "Kharlos Pinto",
+    "Idade": 18,
+    "Sexo": "M",
+    "N_Bi": "10101LA010",
+    "Ano_Lectivo": 7,
+    "Disciplinas": [
+      "ED. FISICA",
+      "MATEMATICA",
+      "EVP",
+      "EMC",
+      "FISICA ",
+      "BIOLOGIA",
+      "GEOGRAFIA",
+      "HISTORIA",
+      "PORTUGUES",
+      "QUIMICA"
+    ],
+    "senha_A": "5678",
+    "ID": 20230904
+  }
+]
