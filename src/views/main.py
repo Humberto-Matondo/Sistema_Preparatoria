@@ -20,11 +20,12 @@ def menu():
     print('[1] - ENTRAR COMO GERENCIADOR. ')
     print('[2] - ENTRAR COMO PROFESSOR. ')
     print('[3] - ENTRAR COMO ALUNO. ')
+    
     try:
         r = int(input('SUA ESCOLHA: '))
     except ValueError:
         print('ESCOLHA INESISTENTE!Por favor, volte a tentar.')
-    return r
+    return r #type: ignore
 
 
 respFim = 'N'

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 from pathlib import Path
 from random import randint
@@ -17,7 +18,7 @@ caminhoProfessor = 'C:\\Users\\HP\\Desktop\\ProjetosPYTHON\\Sistema_Preparatoria
 """ 
 COISAS A FAZER NA PROXIMA ACTUALIZACAO: 
 
-. Meter as verificações e condiçoes antes de add o dado na BD. ex: verificar BI se é um BI correto segundo a lei, verificar se na idade n está -1/ 0 e etc e mais outros dados
+. Criar validacoes antes de add o dado na BD. ex: verificar BI se é um BI correto segundo a lei, verificar se na idade n está -1/ 0 e etc e mais outros dados
 . adicionar a parte do listar alunos e professores
 . adicionar a parte do rem alunos e rem professores
 . adicionar parte de editar um aluno ou professor
@@ -26,6 +27,16 @@ COISAS A FAZER NA PROXIMA ACTUALIZACAO:
 O RESTO PENSO, QUANDO FAZER AS COISAS LISTAS ACIMA
 
 """
+# Validador de BIs
+
+
+def validar_bilhete_identidade(bi):
+    # Expressao Reculares:
+    pattern = r'^\d{9}[a-zA-Z]{2}\d{3}$'  # '^ -Indica o inicio da string, d{9} -Indica 9 digitos, [a-zA-Z]{2} -Indica 2 letras (Maiuscula ou Minuscula). \d{3} -Indica 3 numeros,  $' -Final da String
+    if re.match(pattern, bi):
+        return True
+    else:
+        return False
 
 
 def add_Professor():
@@ -155,9 +166,29 @@ def add_aluno():
     while loop:
         quantidade_de_alunos = 0
 
-        nome = input('Nome do Aluno: ')
-        idade = int(input('Sua idade: '))
-        sexo = input('Seu Sexo: ')
+        # validacao do nome:
+        while True:
+            nome = input('Informe o nome do Aluno: ')
+            if nome.isalpha():
+                break
+            else:
+                print("Nome inválido. \nDigite aperanas letras.")
+
+        # validacao da idade:
+        while True:
+            idade = input("Informe a idade do aluno: ")
+            if idade.isdigit() and int(idade) >= 10:
+                break
+            else:
+                print("Idade inválida. \nO aluno precisa ter no minimo 10 anos.")
+
+        # validacao do sexo
+        while True:
+            sexo = input('Informe o Sexo (M\F): ')
+            if sexo.upper() == 'M' or sexo.upper() == 'F':
+                break
+            else:
+                print("Sexo inválido. \nDigite 'M' para Masculino ou 'F' para Femenino.")
 
         arquivo_vazio_ou_Nao = os.stat(caminhoAluno).st_size == 0
         if (arquivo_vazio_ou_Nao):  # Se estiver vazio:
@@ -165,11 +196,25 @@ def add_aluno():
             quantidade_de_alunos += 1
             alunos = [{'Nome_A': nome, 'Idade': idade, 'Sexo': sexo, 'N_Bi': ' ', 'Ano_Lectivo': 0, 'Disciplinas': [], 'senha_A': ' ', 'ID': 0},]
 
-            numBI = input('Numero do BI: ')
-            alunos[0]['N_Bi'] = numBI
+            # validacao para BI:
+            while True:
+                numBI = input('Informe o numero do bilhete do aluno.\nEx.: 123456789LA012\nR: ')
+                if validar_bilhete_identidade(numBI) and (numBI != '123456789LA012'):
+                    alunos[0]['N_Bi'] = numBI
+                    break
+                else:
+                    print('Bilhete de identidade inválido!')
+                    print()
 
-            ano = int(input('Ano Letivo: '))
-            alunos[0]['Ano_Lectivo'] = ano
+            # validar Ano letivo:
+            while True:
+                ano = input('Ano Letivo do aluno: ')
+                if ano.isdigit() and (int(ano) >= 7 and int(ano) <= 9):
+                    alunos[0]['Ano_Lectivo'] = ano
+                    break
+                else:
+                    print("Ano letivo inválida. \nDigite apenas o número da classe.\nEx.:(7ª, 8ª ou 9ª)R:")
+                    print()
 
             if ano == 7:
                 alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA', 'EVP', 'EMC', 'FISICA ', 'BIOLOGIA', 'GEOGRAFIA', 'HISTORIA', 'PORTUGUES', 'QUIMICA']
@@ -178,8 +223,15 @@ def add_aluno():
             elif ano == 9:
                 alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.3', 'ED. LABORAL', 'EMC vol.3', 'EMPREENDEDORISMO', 'FISICA vol.3', 'GEOGRAFIA vol.3', 'INGLES vol.2', 'BIOLOGIA vol.3', 'PORTUGUES vol.3']
 
-            senha = input('Digite a senha do aluno: ')
-            alunos[0]['senha_A'] = senha
+            # validacao da senha:
+            print('SENHA PRECISA TER NO MINIMO 6 CARACTERES.')
+            while True:
+                senha = input("Digite a senha do aluno: ")
+                if len(senha) < 6:
+                    print("Senha deve ter no mínimo 6 caracteres.")
+                else:
+                    alunos[0]['senha_A'] = senha
+                    break
 
             numeroMatricula = randint(20230000, 20240000)
             alunos[0]['ID'] = numeroMatricula
@@ -225,22 +277,36 @@ def add_aluno():
                 else:
                     return 0
 
-            ciclo_Repeticao = True
-            while ciclo_Repeticao:
-                bI = str(input('Numero do BI: ').upper())
-                resposta = verifica_Existencia_de_BI(bI)
-                if resposta == 1:
-                    continue
-                elif resposta == 2:
-                    print('OPERACAO CANCELADA!')
-                    return
-                else:
-                    dados_alunos[i]['N_Bi'] = bI
-                    ciclo_Repeticao = False
+            # validacao de BI
+            while True:
+                bI = input('Informe o numero do bilhete do aluno.\nEx.: 123456789LA012\nR: ')
+                if validar_bilhete_identidade(bI) and (bI != '123456789LA012'):
+                    ciclo_Repeticao = True
+                    # verificacao se o BI digitado ja se encontra na BD
+                    while ciclo_Repeticao:
+                        resposta = verifica_Existencia_de_BI(bI)
+                        if resposta == 1:
+                            continue
+                        elif resposta == 2:
+                            print('OPERACAO CANCELADA!')
+                            return
+                        else:
+                            dados_alunos[i]['N_Bi'] = bI
+                            ciclo_Repeticao = False
+                            break
                     break
+                else:
+                    print('Bilhete de identidade inválido!')
+                    print()
 
-            ano = int(input('Ano Letivo: '))
-            dados_alunos[i]['Ano_Lectivo'] = ano
+            while True:
+                ano = input('Ano Letivo do aluno: ')
+                if ano.isdigit() and (int(ano) >= 7 and int(ano) <= 9):
+                    dados_alunos[i]['Ano_Lectivo'] = ano
+                    break
+                else:
+                    print("Ano letivo inválida. \nDigite apenas o número da classe.\nEx.:(7ª, 8ª ou 9ª)R:")
+                    print()
 
             if ano == 7:
                 dados_alunos[i]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA', 'EVP', 'EMC', 'FISICA ', 'BIOLOGIA', 'GEOGRAFIA', 'HISTORIA', 'PORTUGUES', 'QUIMICA']
@@ -249,8 +315,16 @@ def add_aluno():
             elif ano == 9:
                 dados_alunos[i]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.3', 'ED. LABORAL', 'EMC vol.3', 'EMPREENDEDORISMO', 'FISICA vol.3', 'GEOGRAFIA vol.3', 'INGLES vol.2', 'BIOLOGIA vol.3', 'PORTUGUES vol.3']
 
-            senha = input('Digite a senha do aluno: ')
-            dados_alunos[i]['senha_A'] = senha
+            print()
+            # validacao da senha:
+            print('SENHA PRECISA TER NO MINIMO 6 CARACTERES.')
+            while True:
+                senha = input("Digite a senha do aluno: ")
+                if len(senha) < 6:
+                    print("Senha deve ter no mínimo 6 caracteres.")
+                else:
+                    dados_alunos[i]['senha_A'] = senha
+                    break
 
             numeroMatricula = randint(20230000, 20240000)  # sera permitido apenas o cadastro de 10 mil alunos.
             for dado in dados_alunos:
@@ -285,7 +359,7 @@ def rem_Professor():
     for pessoa in professores:
         if pessoa['ID'] == id:
             pessoa.clear()
-    print('Professor Eliminado!')
+        print('Professor Eliminado!')
 
 
 def rem_aluno():

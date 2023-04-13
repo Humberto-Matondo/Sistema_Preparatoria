@@ -19,4 +19,6 @@ def prencAluno():
     if i == 0:
         print('NOME DO USUARIO OU SEJA ESTA ERRADA!')
 
+
+
     #Precisa ter opcao de consultar nota
