@@ -40,8 +40,6 @@ def validar_bilhete_identidade(bi):
 
 
 def add_Professor():
-    # meter as regras e as verificacoes aqui
-
     loop = True
     while loop:
         quantidade_de_professores = 0
@@ -49,24 +47,76 @@ def add_Professor():
         arquivo_vazio_ou_Nao = os.stat(caminhoProfessor).st_size == 0
         if (arquivo_vazio_ou_Nao):  # Se estiver vazio:
 
-            nome = str(input('Nome do Professor: '))
-            idade = int(input('idade do Professor: '))
-            sexo = input('Sexo: ').upper()
+            while True:
+                nome = input('Nome do Professor: ')
+                if nome.isalpha():
+                    break
+                else:
+                    print("Nome inválido. \nDigite apenas letras.")
+
+            while True:
+                idade = input('Informe a idade do Professor: ')
+                if idade.isdigit() and int(idade) >= 10:
+                    break
+                else:
+                    print("Idade inválida. \nO professor precisa ter no minimo 20 anos.")
+
+            while True:
+                sexo = input('Informe o Sexo (M\F): ')
+                if sexo.upper() == 'M' or sexo.upper() == 'F':
+                    break
+                else:
+                    print("Sexo inválido. \nDigite 'M' para Masculino ou 'F' para Femenino.")
 
             quantidade_de_professores += 1
-            professores = [{'nome_P': nome, 'idade': idade, 'sexo': sexo, 'bI': ' ', 'senha_P': ' ', 'classe_que_dara_aulas': 0, 'disciplina': ' ', 'iD': 0},]
+            professores = [{'nome_P': nome, 'idade': int(idade), 'sexo': sexo, 'bI': ' ', 'senha_P': ' ', 'classe_que_dara_aulas': 0, 'disciplina': ' ', 'iD': 0},]
 
-            numBI = str(input('Numero do BI: '))
-            professores[0]['bI'] = numBI
+            while True:
+                numBI = input('Informe o numero do bilhete do Professor.\nEx.: 123456789LA012\nR: ')
+                if validar_bilhete_identidade(numBI) and (numBI != '123456789LA012'):
+                    professores[0]['bI'] = numBI
+                    break
+                else:
+                    print('Bilhete de identidade inválido!')
+                    print()
 
-            senhaP = str(input('Senha do Professor: '))
-            professores[0]['senha_P'] = senhaP
+            print('SENHA PRECISA TER APENAS LETRAS E NUMEROS COM NO MINIMO 6 CARACTERES.')
+            while True:
+                senhaP = input("Digite a senha do professor: ")
+                if not senhaP.isalnum():
+                    print("A senha deve conter apenas letras e números.")
+                elif len(senhaP) < 6:
+                    print("A senha deve ter no mínimo 6 caracteres.")
+                else:
+                    professores[0]['senha_P'] = senhaP
+                    break
 
-            disc = str(input('Disciplina que Leciona: ').upper())
-            professores[0]['disciplina'] = disc
+            while True:
+                classe = input('A classe que o professor Leciona: ')
+                print()
+                if classe.isdigit() and (int(classe) >= 7 and int(classe) <= 9):
+                    classes_disponiveis = []
 
-            classe = int(input('A Classe que Leciona: '))
-            professores[0]['classe_que_dara_aulas'] = classe
+                    if classe == '7':
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA', 'EVP', 'EMC', 'FISICA', 'BIOLOGIA', 'GEOGRAFIA', 'HISTORIA', 'PORTUGUES', 'QUIMICA']
+                    elif classe == '8':
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA 2', 'EMC 2', 'FISICA 2', 'BIOLOGIA 2', 'GEOGRAFIA 2', 'INGLES 1', 'PORTUGUES 2', 'QUIMICA 2']
+                    else:
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA 3', 'ED. LABORAL', 'EMC 3', 'EMPREENDEDORISMO', 'FISICA 3', 'GEOGRAFIA 3', 'INGLES 2', 'BIOLOGIA 3', 'PORTUGUES 3']
+
+                    print()
+                    disc = input(f"DICIPLINAS: [{', '.join(classes_disponiveis)}]\nQual das disciplinas acima o professor Leciona? R: ").upper()
+
+                    if disc in classes_disponiveis:
+                        professores[0]['classe_que_dara_aulas'] = int(classe)
+                        professores[0]['disciplina'] = disc
+                        break
+                    else:
+                        print(f"Disciplina inválida. As disciplinas disponíveis para a classe {classe} são: {', '.join(classes_disponiveis)}")
+                        print()
+                else:
+                    print("Classe inválida. \nDigite apenas o número da classe Lecionada pelo professor.\nEx.: 7ª, 8ª ou 9ª \nR:")
+                    print()
 
             iD = randint(2023000, 2024000)
             professores[0]['iD'] = iD
@@ -86,14 +136,32 @@ def add_Professor():
                 break
 
         else:
-            nome = str(input('Nome do Professor: '))
-            idade = int(input('idade do Professor: '))
-            sexo = input('Sexo: ').upper()
+
+            while True:
+                nome = input('Nome do Professor: ')
+                if nome.isalpha():
+                    break
+                else:
+                    print("Nome inválido. \nDigite apenas letras.")
+
+            while True:
+                idade = input('Informe a idade do Professor: ')
+                if idade.isdigit() and int(idade) >= 20:
+                    break
+                else:
+                    print("Idade inválida. \nO professor precisa ter no minimo 20 anos.")
+
+            while True:
+                sexo = input('Informe o Sexo (M\F): ')
+                if sexo.upper() == 'M' or sexo.upper() == 'F':
+                    break
+                else:
+                    print("Sexo inválido. \nDigite 'M' para Masculino ou 'F' para Femenino.")
 
             with open(caminhoProfessor, 'r') as arquivo:
                 dados_professor = json.load(arquivo)
 
-            dados_professor.append({'nome_P': nome, 'idade': idade, 'sexo': sexo, 'bI': ' ', 'senha_P': ' ', 'classe_que_dara_aulas': 0, 'disciplina': ' ', 'iD': 0})
+            dados_professor.append({'nome_P': nome, 'idade': int(idade), 'sexo': sexo, 'bI': ' ', 'senha_P': ' ', 'classe_que_dara_aulas': 0, 'disciplina': ' ', 'iD': 0})
 
             quantidade_de_professores, i = len(dados_professor), len(dados_professor)
             i -= 1
@@ -115,28 +183,64 @@ def add_Professor():
                 else:
                     return 0
 
-            ciclo_Repeticao = True
-            while ciclo_Repeticao:
-                bI = str(input('Numero do BI: ').upper())
-                resposta = verifica_Existencia_de_BI(bI)
-                if resposta == 1:
-                    continue
-                elif resposta == 2:
-                    print('OPERACAO CANCELADA!')
-                    return
+            while True:
+                bI = input('Informe o numero do bilhete do Professor.\nEx.: 123456789LA012\nR: ')
+                if validar_bilhete_identidade(bI) and (bI != '123456789LA012'):
+                    ciclo_Repeticao = True
+                    # verificacao se o BI digitado ja se encontra na BD
+                    while ciclo_Repeticao:
+                        resposta = verifica_Existencia_de_BI(bI)
+                        if resposta == 1:
+                            continue
+                        elif resposta == 2:
+                            print('OPERACAO CANCELADA!')
+                            return
+                        else:
+                            dados_professor[i]['bI'] = bI
+                            ciclo_Repeticao = False
+                            break
+                    break
                 else:
-                    dados_professor[i]['bI'] = bI
-                    ciclo_Repeticao = False
+                    print('Bilhete de identidade inválido!')
+                    print()
+
+            print('SENHA PRECISA TER APENAS LETRAS E NUMEROS COM NO MINIMO 6 CARACTERES.')
+            while True:
+                senhaP = input("Digite a senha do professor: ")
+                if not senhaP.isalnum():
+                    print("A senha deve conter apenas letras e números.")
+                elif len(senhaP) < 6:
+                    print("A senha deve ter no mínimo 6 caracteres.")
+                else:
+                    dados_professor[i]['senha_P'] = senhaP
                     break
 
-            senhaP = str(input('Senha do Professor: '))
-            dados_professor[i]['senha_P'] = senhaP
+            while True:
+                classe = input('A classe que o professor Leciona: ')
+                print()
+                if classe.isdigit() and (int(classe) >= 7 and int(classe) <= 9):
+                    classes_disponiveis = []
 
-            disc = str(input('Disciplina que Leciona: ').upper())
-            dados_professor[i]['disciplina'] = disc
+                    if classe == '7':
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA', 'EVP', 'EMC', 'FISICA', 'BIOLOGIA', 'GEOGRAFIA', 'HISTORIA', 'PORTUGUES', 'QUIMICA']
+                    elif classe == '8':
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA 2', 'EMC 2', 'FISICA 2', 'BIOLOGIA 2', 'GEOGRAFIA 2', 'INGLES 1', 'PORTUGUES 2', 'QUIMICA 2']
+                    else:
+                        classes_disponiveis = ['ED. FISICA', 'MATEMATICA 3', 'ED. LABORAL', 'EMC 3', 'EMPREENDEDORISMO', 'FISICA 3', 'GEOGRAFIA 3', 'INGLES 2', 'BIOLOGIA 3', 'PORTUGUES 3']
 
-            classe = int(input('A Classe que Leciona: '))
-            dados_professor[i]['classe_que_dara_aulas'] = classe
+                    print()
+                    disc = input(f"DICIPLINAS: [{', '.join(classes_disponiveis)}]\nQual das disciplinas acima o professor Leciona? R: ").upper()
+
+                    if disc in classes_disponiveis:
+                        dados_professor[i]['classe_que_dara_aulas'] = int(classe)
+                        dados_professor[i]['disciplina'] = disc
+                        break
+                    else:
+                        print(f"Disciplina inválida. As disciplinas disponíveis para a classe {classe} são: {', '.join(classes_disponiveis)}")
+                        print()
+                else:
+                    print("Classe inválida. \nDigite apenas o número da classe Lecionada pelo professor.\nEx.: 7ª, 8ª ou 9ª \nR:")
+                    print()
 
             iD = randint(2023000, 2024000)  # Sera permitido apenas o cadastro de 1000 professores.
             for dado in dados_professor:
@@ -172,7 +276,7 @@ def add_aluno():
             if nome.isalpha():
                 break
             else:
-                print("Nome inválido. \nDigite aperanas letras.")
+                print("Nome inválido. \nDigite apenas letras.")
 
         # validacao da idade:
         while True:
@@ -194,7 +298,7 @@ def add_aluno():
         if (arquivo_vazio_ou_Nao):  # Se estiver vazio:
 
             quantidade_de_alunos += 1
-            alunos = [{'Nome_A': nome, 'Idade': idade, 'Sexo': sexo, 'N_Bi': ' ', 'Ano_Lectivo': 0, 'Disciplinas': [], 'senha_A': ' ', 'ID': 0},]
+            alunos = [{'Nome_A': nome, 'Idade': int(idade), 'Sexo': sexo, 'N_Bi': ' ', 'Ano_Lectivo': 0, 'Disciplinas': [], 'senha_A': ' ', 'ID': 0},]
 
             # validacao para BI:
             while True:
@@ -210,25 +314,27 @@ def add_aluno():
             while True:
                 ano = input('Ano Letivo do aluno: ')
                 if ano.isdigit() and (int(ano) >= 7 and int(ano) <= 9):
-                    alunos[0]['Ano_Lectivo'] = ano
+                    alunos[0]['Ano_Lectivo'] = int(ano)
                     break
                 else:
                     print("Ano letivo inválida. \nDigite apenas o número da classe.\nEx.:(7ª, 8ª ou 9ª)R:")
                     print()
 
-            if ano == 7:
+            if int(ano) == 7:
                 alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA', 'EVP', 'EMC', 'FISICA ', 'BIOLOGIA', 'GEOGRAFIA', 'HISTORIA', 'PORTUGUES', 'QUIMICA']
-            elif ano == 8:
-                alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.2', 'EMC vol.2', 'FISICA vol.2', 'BIOLOGIA vol.2', 'GEOGRAFIA vol.2', 'INGLES vol.1 ', 'PORTUGUES vol.2', 'QUIMICA vol2']
-            elif ano == 9:
-                alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.3', 'ED. LABORAL', 'EMC vol.3', 'EMPREENDEDORISMO', 'FISICA vol.3', 'GEOGRAFIA vol.3', 'INGLES vol.2', 'BIOLOGIA vol.3', 'PORTUGUES vol.3']
+            elif int(ano) == 8:
+                alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA 2', 'EMC 2', 'FISICA 2', 'BIOLOGIA 2', 'GEOGRAFIA 2', 'INGLES 1', 'PORTUGUES 2', 'QUIMICA 2']
+            elif int(ano) == 9:
+                alunos[0]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA 3', 'ED. LABORAL', 'EMC 3', 'EMPREENDEDORISMO', 'FISICA 3', 'GEOGRAFIA 3', 'INGLES 2', 'BIOLOGIA 3', 'PORTUGUES 3']
 
-            # validacao da senha:
-            print('SENHA PRECISA TER NO MINIMO 6 CARACTERES.')
+            # Validacao da senha:
+            print('SENHA PRECISA TER APENAS LETRAS E NUMEROS COM NO MINIMO 6 CARACTERES.')
             while True:
                 senha = input("Digite a senha do aluno: ")
-                if len(senha) < 6:
-                    print("Senha deve ter no mínimo 6 caracteres.")
+                if not senha.isalnum():
+                    print("A senha deve conter apenas letras e números.")
+                elif len(senha) < 6:
+                    print("A senha deve ter no mínimo 6 caracteres.")
                 else:
                     alunos[0]['senha_A'] = senha
                     break
@@ -314,14 +420,16 @@ def add_aluno():
                 dados_alunos[i]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.2', 'EMC vol.2', 'FISICA vol.2', 'BIOLOGIA vol.2', 'GEOGRAFIA vol.2', 'INGLES vol.1 ', 'PORTUGUES vol.2', 'QUIMICA vol2']
             elif ano == 9:
                 dados_alunos[i]['Disciplinas'] = ['ED. FISICA', 'MATEMATICA vol.3', 'ED. LABORAL', 'EMC vol.3', 'EMPREENDEDORISMO', 'FISICA vol.3', 'GEOGRAFIA vol.3', 'INGLES vol.2', 'BIOLOGIA vol.3', 'PORTUGUES vol.3']
-
             print()
+
             # validacao da senha:
-            print('SENHA PRECISA TER NO MINIMO 6 CARACTERES.')
+            print('SENHA PRECISA TER APENAS LETRAS E NUMEROS COM NO MINIMO 6 CARACTERES.')
             while True:
                 senha = input("Digite a senha do aluno: ")
-                if len(senha) < 6:
-                    print("Senha deve ter no mínimo 6 caracteres.")
+                if not senha.isalnum():
+                    print("A senha deve conter apenas letras e números.")
+                elif len(senha) < 6:
+                    print("A senha deve ter no mínimo 6 caracteres.")
                 else:
                     dados_alunos[i]['senha_A'] = senha
                     break
